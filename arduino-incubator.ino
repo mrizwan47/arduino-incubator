@@ -53,14 +53,21 @@ void setup(){
 
 }
 
+void switch_fan( bool on ) {
+
+	if( on ){
+		digitalWrite(FAN_TRIGGER_PIN, HIGH);
+	}else{
+		digitalWrite(FAN_TRIGGER_PIN, LOW);
+	}
+
+}
 
 void switch_heat( bool on ) {
 
 	if( on ){
-		digitalWrite(FAN_TRIGGER_PIN, HIGH);
 		digitalWrite(HEATER_TRIGGET_PIN, HIGH);
 	}else{
-		digitalWrite(FAN_TRIGGER_PIN, LOW);
 		digitalWrite(HEATER_TRIGGET_PIN, LOW);
 	}
 
@@ -85,11 +92,13 @@ void loop() {
 			digitalWrite(LOW_TEMP_WARNING_PIN, HIGH);
 			Serial.println("WARNING: Low Temprature");
 			switch_heat(true);
+			switch_fan(true);
 		}else if( event.temperature > MAX_TEMPRATURE ){
 			digitalWrite(HIGH_TEMP_WARNING_PIN, HIGH);
 			digitalWrite(LOW_TEMP_WARNING_PIN, LOW);
 			Serial.println("WARNING: High Temprature");
 			switch_heat(false);
+			switch_fan(false);
 		}else{
 			digitalWrite(HIGH_TEMP_WARNING_PIN, LOW);
 			digitalWrite(LOW_TEMP_WARNING_PIN, LOW);
