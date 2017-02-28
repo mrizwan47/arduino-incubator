@@ -24,6 +24,9 @@
 #define FAN_TRIGGER_PIN				9			// Pin to trigger Fan
 #define HEATER_TRIGGET_PIN		10		// Pin to trigger heater/bulb
 
+#define AUTO_FAN							true	// Enable automatically switching of fan
+#define AUTO_HEAT							true	// Enable automatically switching of heat
+
 // Configurable Settings
 #define MIN_TEMPRATURE				32		// Minimum temprature
 #define MAX_TEMPRATURE				33		// Maximum temprature
@@ -75,6 +78,32 @@ void switch_heat( bool on ) {
 
 void loop() {
 
+	if( Serial.available() ){
+
+		char com = Serial.read();
+
+		if( com == 'FanOff' ){
+			switch_fan(false);
+			AUTO_FAN	=	false;
+		}
+
+		if( com == 'FanOn' ){
+			switch_fan(true);
+			AUTO_FAN	=	false;
+		}
+
+		if( com == 'HeatOff' ){
+			switch_heat(false);
+			AUTO_HEAT	=	false;
+		}
+
+		if( com == 'HeatOn' ){
+			switch_heat(true);
+			AUTO_HEAT	=	false;
+		}
+
+	}
+
 	sensors_event_t event;
 
 	dht.temperature().getEvent(&event);
@@ -88,17 +117,35 @@ void loop() {
 		Serial.println(" C");
 
 		if( event.temperature < MIN_TEMPRATURE ){
+
 			digitalWrite(HIGH_TEMP_WARNING_PIN, LOW);
 			digitalWrite(LOW_TEMP_WARNING_PIN, HIGH);
+
 			Serial.println("WARNING: Low Temprature");
-			switch_heat(true);
-			switch_fan(true);
+
+			if( AUTO_FAN ){
+				switch_fan(true);
+			}
+
+			if( AUTO_HEAT ){
+				switch_heat(true);
+			}
+
 		}else if( event.temperature > MAX_TEMPRATURE ){
+
 			digitalWrite(HIGH_TEMP_WARNING_PIN, HIGH);
 			digitalWrite(LOW_TEMP_WARNING_PIN, LOW);
+
 			Serial.println("WARNING: High Temprature");
-			switch_heat(false);
-			switch_fan(false);
+
+			if( AUTO_FAN ){
+				switch_fan(false);
+			}
+
+			if( AUTO_HEAT ){
+				switch_heat(false);
+			}
+
 		}else{
 			digitalWrite(HIGH_TEMP_WARNING_PIN, LOW);
 			digitalWrite(LOW_TEMP_WARNING_PIN, LOW);
