@@ -24,8 +24,8 @@
 #define FAN_TRIGGER_PIN				9			// Pin to trigger Fan
 #define HEATER_TRIGGET_PIN		10		// Pin to trigger heater/bulb
 
-#define AUTO_FAN							true	// Enable automatically switching of fan
-#define AUTO_HEAT							true	// Enable automatically switching of heat
+bool AUTO_FAN									true	// Enable automatically switching of fan
+bool AUTO_HEAT								true	// Enable automatically switching of heat
 
 // Configurable Settings
 #define MIN_TEMPRATURE				32		// Minimum temprature
