@@ -24,8 +24,8 @@
 #define FAN_TRIGGER_PIN				9			// Pin to trigger Fan
 #define HEATER_TRIGGET_PIN		10		// Pin to trigger heater/bulb
 
-bool AUTO_FAN									true	// Enable automatically switching of fan
-bool AUTO_HEAT								true	// Enable automatically switching of heat
+bool AUTO_FAN;	// Enable automatically switching of fan
+bool AUTO_HEAT;	// Enable automatically switching of heat
 
 // Configurable Settings
 #define MIN_TEMPRATURE				32		// Minimum temprature
@@ -37,6 +37,9 @@ DHT_Unified dht(DHT_SENSOR_PIN, DHT_SENSOR_TYPE);
 uint32_t delayMS;
 
 void setup(){
+
+	AUTO_FAN	=	true;
+	AUTO_HEAT	=	true;
 
 	Serial.begin(9600);
 	dht.begin();
@@ -53,6 +56,14 @@ void setup(){
 
 	pinMode(FAN_TRIGGER_PIN, OUTPUT);
 	pinMode(HEATER_TRIGGET_PIN, OUTPUT);
+
+	Serial.println("Send:");
+	Serial.println("1 to Turn Heat on");
+	Serial.println("2 to Turn Heat off");
+	Serial.println("3 to Turn Fan on");
+	Serial.println("4 to Turn Fan off");
+	Serial.println("5 to Automate Heat");
+	Serial.println("6 to Automate Fan");
 
 }
 
@@ -82,24 +93,38 @@ void loop() {
 
 		char com = Serial.read();
 
-		if( com == 'FanOff' ){
+		if( com == '4' ){
 			switch_fan(false);
 			AUTO_FAN	=	false;
+			Serial.println("Fan is off now!");
 		}
 
-		if( com == 'FanOn' ){
+		if( com == '3' ){
 			switch_fan(true);
 			AUTO_FAN	=	false;
+			Serial.println("Fan is on now!");
 		}
 
-		if( com == 'HeatOff' ){
+		if( com == '2' ){
 			switch_heat(false);
 			AUTO_HEAT	=	false;
+			Serial.println("Heat is off now!");
 		}
 
-		if( com == 'HeatOn' ){
+		if( com == '1' ){
 			switch_heat(true);
 			AUTO_HEAT	=	false;
+			Serial.println("Heat is on now!");
+		}
+
+		if( com == '5' ){
+			AUTO_HEAT = true;
+			Serial.println("Heat is auto now!");
+		}
+
+		if( com == '6' ){
+			AUTO_FAN  = true;
+			Serial.println("Fan is auto now!");
 		}
 
 	}
