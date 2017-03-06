@@ -28,8 +28,8 @@ bool AUTO_FAN;	// Enable automatically switching of fan
 bool AUTO_HEAT;	// Enable automatically switching of heat
 
 // Configurable Settings
-#define MIN_TEMPRATURE				32		// Minimum temprature
-#define MAX_TEMPRATURE				33		// Maximum temprature
+#define MIN_TEMPRATURE				37.2		// Minimum temprature
+#define MAX_TEMPRATURE				37.5		// Maximum temprature
 #define MIN_HUMIDITY					45		// Minimum Humidity
 #define MAX_HUMIDITY					70		// Maximum Humidity
 
@@ -58,12 +58,14 @@ void setup(){
 	pinMode(HEATER_TRIGGET_PIN, OUTPUT);
 
 	Serial.println("Send:");
+	Serial.println("0 to show this menu");
 	Serial.println("1 to Turn Heat on");
 	Serial.println("2 to Turn Heat off");
 	Serial.println("3 to Turn Fan on");
 	Serial.println("4 to Turn Fan off");
 	Serial.println("5 to Automate Heat");
 	Serial.println("6 to Automate Fan");
+	Serial.println("-----------------------");
 
 }
 
@@ -93,16 +95,22 @@ void loop() {
 
 		char com = Serial.read();
 
-		if( com == '4' ){
-			switch_fan(false);
-			AUTO_FAN	=	false;
-			Serial.println("Fan is off now!");
+		if( com == '0' ){
+			Serial.println("Send:");
+			Serial.println("0 to show this menu");
+			Serial.println("1 to Turn Heat on");
+			Serial.println("2 to Turn Heat off");
+			Serial.println("3 to Turn Fan on");
+			Serial.println("4 to Turn Fan off");
+			Serial.println("5 to Automate Heat");
+			Serial.println("6 to Automate Fan");
+			Serial.println("-----------------------");
 		}
 
-		if( com == '3' ){
-			switch_fan(true);
-			AUTO_FAN	=	false;
-			Serial.println("Fan is on now!");
+		if( com == '1' ){
+			switch_heat(true);
+			AUTO_HEAT	=	false;
+			Serial.println("Heat is on now!");
 		}
 
 		if( com == '2' ){
@@ -111,10 +119,16 @@ void loop() {
 			Serial.println("Heat is off now!");
 		}
 
-		if( com == '1' ){
-			switch_heat(true);
-			AUTO_HEAT	=	false;
-			Serial.println("Heat is on now!");
+		if( com == '3' ){
+			switch_fan(true);
+			AUTO_FAN	=	false;
+			Serial.println("Fan is on now!");
+		}
+
+		if( com == '4' ){
+			switch_fan(false);
+			AUTO_FAN	=	false;
+			Serial.println("Fan is off now!");
 		}
 
 		if( com == '5' ){
