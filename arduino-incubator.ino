@@ -28,10 +28,10 @@ bool AUTO_FAN;	// Enable automatically switching of fan
 bool AUTO_HEAT;	// Enable automatically switching of heat
 
 // Configurable Settings
-#define MIN_TEMPRATURE				37.2		// Minimum temprature
-#define MAX_TEMPRATURE				37.5		// Maximum temprature
-#define MIN_HUMIDITY					45		// Minimum Humidity
-#define MAX_HUMIDITY					70		// Maximum Humidity
+#define MIN_TEMPRATURE				37.2	// Minimum temprature
+#define MAX_TEMPRATURE				37.5	// Maximum temprature
+#define MIN_HUMIDITY					45    // Minimum Humidity
+#define MAX_HUMIDITY					55    // Maximum Humidity
 
 DHT_Unified dht(DHT_SENSOR_PIN, DHT_SENSOR_TYPE);
 uint32_t delayMS;
@@ -57,15 +57,7 @@ void setup(){
 	pinMode(FAN_TRIGGER_PIN, OUTPUT);
 	pinMode(HEATER_TRIGGET_PIN, OUTPUT);
 
-	Serial.println("Send:");
-	Serial.println("0 to show this menu");
-	Serial.println("1 to Turn Heat on");
-	Serial.println("2 to Turn Heat off");
-	Serial.println("3 to Turn Fan on");
-	Serial.println("4 to Turn Fan off");
-	Serial.println("5 to Automate Heat");
-	Serial.println("6 to Automate Fan");
-	Serial.println("-----------------------");
+	print_menu();
 
 }
 
@@ -89,6 +81,20 @@ void switch_heat( bool on ) {
 
 }
 
+void print_menu(){
+
+	Serial.println("Send:");
+	Serial.println("0 to show this menu");
+	Serial.println("1 to Turn Heat on");
+	Serial.println("2 to Turn Heat off");
+	Serial.println("3 to Turn Fan on");
+	Serial.println("4 to Turn Fan off");
+	Serial.println("5 to Automate Heat");
+	Serial.println("6 to Automate Fan");
+	Serial.println("-----------------------");
+
+}
+
 void loop() {
 
 	if( Serial.available() ){
@@ -96,15 +102,7 @@ void loop() {
 		char com = Serial.read();
 
 		if( com == '0' ){
-			Serial.println("Send:");
-			Serial.println("0 to show this menu");
-			Serial.println("1 to Turn Heat on");
-			Serial.println("2 to Turn Heat off");
-			Serial.println("3 to Turn Fan on");
-			Serial.println("4 to Turn Fan off");
-			Serial.println("5 to Automate Heat");
-			Serial.println("6 to Automate Fan");
-			Serial.println("-----------------------");
+			print_menu();
 		}
 
 		if( com == '1' ){
